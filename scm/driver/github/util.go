@@ -22,6 +22,9 @@ func encodeListOptions(opts scm.ListOptions) string {
 	if opts.Search != "" {
 		params.Set("q", opts.Search)
 	}
+	if !opts.IncludePrivate {
+		params.Set("visibility", "public")
+	}
 	return params.Encode()
 }
 

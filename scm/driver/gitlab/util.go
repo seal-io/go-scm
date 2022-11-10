@@ -47,6 +47,10 @@ func encodeMemberListOptions(opts scm.ListOptions) string {
 	if opts.Search != "" {
 		params.Set("search", opts.Search)
 	}
+	if !opts.IncludePrivate {
+		params.Add("visibility", "public")
+		params.Add("visibility", "internal")
+	}
 	return params.Encode()
 }
 

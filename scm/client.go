@@ -70,10 +70,11 @@ type (
 
 	// ListOptions specifies optional parameters.
 	ListOptions struct {
-		URL    string
-		Page   int
-		Size   int
-		Search string
+		URL            string
+		Page           int
+		Size           int
+		Search         string
+		IncludePrivate bool
 	}
 
 	// Client manages communication with a version control
