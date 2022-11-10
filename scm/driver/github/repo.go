@@ -104,10 +104,41 @@ func (s *RepositoryService) FindPerms(ctx context.Context, repo string) (*scm.Pe
 
 // List returns the user repository list.
 func (s *RepositoryService) List(ctx context.Context, opts scm.ListOptions) ([]*scm.Repository, *scm.Response, error) {
+	if opts.Search != "" {
+		return s.listWithSearch(ctx, opts)
+	}
 	path := fmt.Sprintf("user/repos?%s", encodeListOptions(opts))
 	out := []*repository{}
 	res, err := s.client.do(ctx, "GET", path, nil, &out)
 	return convertRepositoryList(out), res, err
+}
+
+func (s *RepositoryService) listWithSearch(ctx context.Context, opts scm.ListOptions) ([]*scm.Repository, *scm.Response, error) {
+	orgService := organizationService{client: s.client}
+	orgs, _, err := orgService.List(ctx, scm.ListOptions{})
+	if err != nil {
+		return nil, nil, err
+	}
+	userService := userService{client: s.client}
+	user, _, err := userService.Find(ctx)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Search by name, owned by the user or its organizations
+	opts.Search += fmt.Sprintf(" in:name fork:true user:%s", user.Login)
+	for _, org := range orgs {
+		opts.Search += fmt.Sprintf(" org:%s", org.Name)
+	}
+
+	path := fmt.Sprintf("search/repositories?%s", encodeListOptions(opts))
+	out := struct {
+		TotalCount        int           `json:"total_count"`
+		IncompleteResults bool          `json:"incomplete_results"`
+		Items             []*repository `json:"items"`
+	}{}
+	res, err := s.client.do(ctx, "GET", path, nil, &out)
+	return convertRepositoryList(out.Items), res, err
 }
 
 // List returns the github app installation repository list.

@@ -44,6 +44,9 @@ func encodeMemberListOptions(opts scm.ListOptions) string {
 	if opts.Size != 0 {
 		params.Set("per_page", strconv.Itoa(opts.Size))
 	}
+	if opts.Search != "" {
+		params.Set("search", opts.Search)
+	}
 	return params.Encode()
 }
 

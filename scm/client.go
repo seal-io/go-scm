@@ -68,12 +68,12 @@ type (
 		Reset     int64
 	}
 
-	// ListOptions specifies optional pagination
-	// parameters.
+	// ListOptions specifies optional parameters.
 	ListOptions struct {
-		URL  string
-		Page int
-		Size int
+		URL    string
+		Page   int
+		Size   int
+		Search string
 	}
 
 	// Client manages communication with a version control
