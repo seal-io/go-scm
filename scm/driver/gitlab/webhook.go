@@ -339,10 +339,7 @@ func convertPullRequestHook(src *pullRequestHook) *scm.PullRequestHook {
 	case "update":
 		action = scm.ActionSync
 	}
-	fork := scm.Join(
-		src.ObjectAttributes.Source.Namespace,
-		src.ObjectAttributes.Source.Name,
-	)
+	fork := src.ObjectAttributes.Source.PathWithNamespace
 	namespace, name := scm.Split(src.Project.PathWithNamespace)
 	return &scm.PullRequestHook{
 		Action: action,
