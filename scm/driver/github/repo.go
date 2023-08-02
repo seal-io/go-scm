@@ -23,6 +23,7 @@ type repository struct {
 	} `json:"owner"`
 	Name          string    `json:"name"`
 	FullName      string    `json:"full_name"`
+	Description   string    `json:"description"`
 	Private       bool      `json:"private"`
 	Fork          bool      `json:"fork"`
 	Archived      bool      `json:"archived"`
@@ -260,9 +261,10 @@ func convertRepository(from *repository) *scm.Repository {
 		return nil
 	}
 	return &scm.Repository{
-		ID:        strconv.Itoa(from.ID),
-		Name:      from.Name,
-		Namespace: from.Owner.Login,
+		ID:          strconv.Itoa(from.ID),
+		Name:        from.Name,
+		Namespace:   from.Owner.Login,
+		Description: from.Description,
 		Perm: &scm.Perm{
 			Push:  from.Permissions.Push,
 			Pull:  from.Permissions.Pull,

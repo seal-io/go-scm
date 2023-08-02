@@ -19,6 +19,7 @@ import (
 type repository struct {
 	ID            int         `json:"id"`
 	Path          string      `json:"path"`
+	Description   string      `json:"description"`
 	PathNamespace string      `json:"path_with_namespace"`
 	DefaultBranch string      `json:"default_branch"`
 	Visibility    string      `json:"visibility"`
@@ -177,16 +178,17 @@ func convertRepositoryList(from []*repository) []*scm.Repository {
 // to the common repository structure.
 func convertRepository(from *repository) *scm.Repository {
 	to := &scm.Repository{
-		ID:         strconv.Itoa(from.ID),
-		Namespace:  from.Namespace.Path,
-		Name:       from.Path,
-		Branch:     from.DefaultBranch,
-		Archived:   from.Archived,
-		Private:    convertPrivate(from.Visibility),
-		Visibility: convertVisibility(from.Visibility),
-		Clone:      from.HTTPURL,
-		CloneSSH:   from.SSHURL,
-		Link:       from.WebURL,
+		ID:          strconv.Itoa(from.ID),
+		Namespace:   from.Namespace.Path,
+		Description: from.Description,
+		Name:        from.Path,
+		Branch:      from.DefaultBranch,
+		Archived:    from.Archived,
+		Private:     convertPrivate(from.Visibility),
+		Visibility:  convertVisibility(from.Visibility),
+		Clone:       from.HTTPURL,
+		CloneSSH:    from.SSHURL,
+		Link:        from.WebURL,
 		Perm: &scm.Perm{
 			Pull:  true,
 			Push:  canPush(from),
