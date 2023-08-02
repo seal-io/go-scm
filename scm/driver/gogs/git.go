@@ -20,6 +20,10 @@ func (s *gitService) CreateBranch(ctx context.Context, repo string, params *scm.
 	return nil, scm.ErrNotSupported
 }
 
+func (s *gitService) CreateCommit(ctx context.Context, repo string, opts *scm.CommitInput) (*scm.Commit, *scm.Response, error) {
+	return nil, nil, scm.ErrNotSupported
+}
+
 func (s *gitService) FindBranch(ctx context.Context, repo, name string) (*scm.Reference, *scm.Response, error) {
 	path := fmt.Sprintf("api/v1/repos/%s/branches/%s", repo, name)
 	out := new(branch)
