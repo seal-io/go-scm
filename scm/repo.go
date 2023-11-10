@@ -24,6 +24,7 @@ type (
 		Clone       string
 		CloneSSH    string
 		Link        string
+		Topics      []string
 		Created     time.Time
 		Updated     time.Time
 	}

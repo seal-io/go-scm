@@ -27,6 +27,7 @@ type repository struct {
 	WebURL        string      `json:"web_url"`
 	SSHURL        string      `json:"ssh_url_to_repo"`
 	HTTPURL       string      `json:"http_url_to_repo"`
+	Topics        []string    `json:"topics"`
 	Namespace     namespace   `json:"namespace"`
 	Permissions   permissions `json:"permissions"`
 }
@@ -189,6 +190,7 @@ func convertRepository(from *repository) *scm.Repository {
 		Clone:       from.HTTPURL,
 		CloneSSH:    from.SSHURL,
 		Link:        from.WebURL,
+		Topics:      from.Topics,
 		Perm: &scm.Perm{
 			Pull:  true,
 			Push:  canPush(from),

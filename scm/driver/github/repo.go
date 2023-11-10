@@ -32,6 +32,7 @@ type repository struct {
 	SSHURL        string    `json:"ssh_url"`
 	CloneURL      string    `json:"clone_url"`
 	DefaultBranch string    `json:"default_branch"`
+	Topics        []string  `json:"topics"`
 	CreatedAt     time.Time `json:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at"`
 	Permissions   struct {
@@ -277,6 +278,7 @@ func convertRepository(from *repository) *scm.Repository {
 		Visibility: convertVisibility(from.Visibility),
 		Clone:      from.CloneURL,
 		CloneSSH:   from.SSHURL,
+		Topics:     from.Topics,
 		Created:    from.CreatedAt,
 		Updated:    from.UpdatedAt,
 	}
