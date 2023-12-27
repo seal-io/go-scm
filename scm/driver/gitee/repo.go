@@ -106,6 +106,7 @@ type repository struct {
 	Name          string    `json:"name"`
 	FullName      string    `json:"full_name"`
 	HumanName     string    `json:"human_name"`
+	Description   string    `json:"description"`
 	Path          string    `json:"path"`
 	Public        bool      `json:"public"`
 	Private       bool      `json:"private"`
@@ -158,9 +159,10 @@ func convertRepositoryList(from []*repository) []*scm.Repository {
 }
 func convertRepository(from *repository) *scm.Repository {
 	return &scm.Repository{
-		ID:        strconv.Itoa(from.ID),
-		Name:      from.Path,
-		Namespace: from.Namespace.Path,
+		ID:          strconv.Itoa(from.ID),
+		Name:        from.Path,
+		Namespace:   from.Namespace.Path,
+		Description: from.Description,
 		Perm: &scm.Perm{
 			Push:  from.Permission.Push,
 			Pull:  from.Permission.Pull,
