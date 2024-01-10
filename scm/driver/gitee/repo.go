@@ -123,6 +123,13 @@ type repository struct {
 		Push  bool `json:"push"`
 		Pull  bool `json:"pull"`
 	} `json:"permission"`
+	ProjectLabels []projectLabel `json:"project_labels"`
+}
+
+type projectLabel struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Ident string `json:"ident"`
 }
 
 type hook struct {
@@ -169,6 +176,7 @@ func convertRepository(from *repository) *scm.Repository {
 			Admin: from.Permission.Admin,
 		},
 		Link:     from.HtmlURL,
+		Topics:   convertTopics(from.ProjectLabels),
 		Branch:   from.DefaultBranch,
 		Private:  from.Private,
 		Clone:    from.HtmlURL,
@@ -176,6 +184,14 @@ func convertRepository(from *repository) *scm.Repository {
 		Created:  from.CreatedAt,
 		Updated:  from.UpdatedAt,
 	}
+}
+
+func convertTopics(from []projectLabel) []string {
+	var topics []string
+	for _, v := range from {
+		topics = append(topics, v.Name)
+	}
+	return topics
 }
 
 func convertHookList(from []*hook) []*scm.Hook {
